@@ -34,8 +34,11 @@ pieces.b_queen.alt = "b_queen";
 pieces.b_rook.src = "b_rook_png_256px.png";
 pieces.b_rook.alt = "b_rook";
 pieces.w_bishop.src = "w_bishop_png_256px.png";
+pieces.w_bishop.alt = "w_bishop";
 pieces.w_king.src = "w_king_png_256px.png";
+pieces.w_king.alt = "w_king";
 pieces.w_knight.src = "w_knight_png_256px.png";
+pieces.w_knight.alt = "w_knight";
 pieces.w_pawn.src = "w_pawn_png_256px.png";
 pieces.w_queen.src = "w_queen_png_256px.png";
 pieces.w_rook.src = "w_rook_png_256px.png";
@@ -124,80 +127,23 @@ function render(cellx = null, celly = null){
     }
 }
 
-function checkMoveType(){
-    let x = Math.abs(firstSelect[1] - secondSelect[2]);
-    let y = Math.abs(firstSelect[2] - secondSelect[2]);
-    let returnVal = [];
-    if(x == y){
-        returnVal[0] = "bishop";
-        if(x == 1){
-            returnVal[1] = "pawnATK";
-        } else {
-            returnVal[1] = "n";
-        }
-    } else if((x == 0 && y != 0) || (x != 0 && y != 0)){
-        returnVal[0] = "rook";
-        if(y > 0){
-            returnVal[1] = "pawnMOV";
-        } else {
-            returnVal[1] = "n";
-        }
-    } else if((x == 1 && y == 2) || (x == 2 && y == 1)){
-        returnVal[0] = "knight";
-        returnVal[1] = "n"
-    } else {
-        returnVal[0] = "n";
-    }
-    console.log("Movetype = ", returnVal[0]);
-    return returnVal;
-}
-
 function move(){
-    let thisMove = checkMoveType();
-    console.log(board);
-    console.log("First Select: ", firstSelect);
-    console.log("Second select: ", secondSelect);
-    let thisPiece = board[firstSelect[1]][firstSelect[2]].piece;
-    console.log("Selected Piece = ", thisPiece.alt.slice(2));
-    if(thisPiece.alt.slice(2) == thisMove[0]){
-        finalizeMove();
-    }
-    //Unfinished here
+    
 }
 
-function finalizeMove(){
-    board[secondSelect[1]][secondSelect[2]].piece = board[firstSelect[1]][secondSelect[2]].piece;
-    board[firstSelect[1]][secondSelect[2]].piece = "empty";
-    board[firstSelect[1]][secondSelect[2]].color = firstSelect[3];
-    board[secondSelect[1]][secondSelect[2]].color = secondSelect[3];
-    firstSelect[0] = false;
-    secondSelect[0] = false;
-    render();
-    //render(firstSelect[1], firstSelect[2]);
-    //render(secondSelect[1], secondSelect[2]);
+var inputObj = {
+    x1: 0,
+    y1: 0,
+    first: false,
+    x2: 0,
+    y2: 0
 }
-var firstSelect = [false, 0, 0, ""];
-var secondSelect = [false, 0, 0, ""];
 
 function input(e){
-    console.log("________________________________________________________");
-    console.log();
+    console.log("__________________________________________________________");
     let x = Math.floor(e.offsetX/50);
     let y = Math.floor(e.offsetY/50);  
-        if(!firstSelect[0] && board[x][y].piece != "empty"){
-            firstSelect[3] = board[x][y].color;
-            board[x][y].color = "yellow";
-            firstSelect[0] = true;
-            firstSelect[1] = x;
-            firstSelect[2] = y;
-        } else if((x != firstSelect[1] || y != firstSelect[2]) && firstSelect[0] === true){
-            secondSelect[3] = board[x][y].color;
-            board[x][y].color = "red";
-            secondSelect[0] = true
-            secondSelect[1] = x;
-            secondSelect[2] = y;
-            move();
-        }
+    board[x][y].color = "yellow";
     render(x, y);
 }
 
